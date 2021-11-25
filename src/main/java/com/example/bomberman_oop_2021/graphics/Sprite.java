@@ -1,5 +1,7 @@
 package com.example.bomberman_oop_2021.graphics;
 
+import java.awt.image.BufferedImage;
+
 /**
  * Lưu thông tin của một sprite lấy ra từ sprite sheet
  * cùng với các phương thức đi kèm nó.
@@ -9,7 +11,7 @@ public class Sprite {
     public static final int SCALED_SIZE = DEFAULT_SIZE * 2;
     private static final int TRANSPARENT_COLOR = 0xffff00ff;
     public int spriteSize; // Kích thước của một sprite.
-    private int x, y; // Tọa độ (x, y) góc phải dưới.
+    private int x, y; // Tọa độ (x, y) góc trái trên.
     public int[] pixels; // Các pixels của một sprite.
     protected int actualWidth;
     protected int actualHeight;
@@ -177,5 +179,21 @@ public class Sprite {
         // loadSprite();
     }
 
+    /**
+     * Tạo màu cho hình ảnh. Gán mọi pixel của ảnh bằng màu color.
+     * @param color màu muốn tô.
+     */
+    private void setColor(int color) {
+        for (int i = 0; i < pixels.length; ++i) {
+            pixels[i] = color;
+        }
+    }
 
+    /**
+     * Tải các pixels của một sprite lên mảng pixels.
+     */
+    private void loadSpriteFromSheet() {
+        BufferedImage sprite = original.image.getSubimage(x, y, spriteSize, spriteSize);
+        sprite.getRGB(0, 0, spriteSize, spriteSize, pixels, 0, spriteSize);
+    }
 }

@@ -28,7 +28,7 @@ public class SpriteSheet {
             int width = image.getWidth();
             int height = image.getHeight();
 
-            // Tải ảnh lên bằng cách lấy mọi pixel của tấm ảnh, lưu vào một mảng 2 chiều pixels
+            // Tải ảnh lên bằng cách lấy mọi pixel của tấm ảnh, lưu vào một mảng 1 chiều pixels
             // thông qua phương thức getRBG của thư viện Java OpenCV.
             image.getRGB(0, 0, width, height, pixels, 0, width);
         } catch (IOException e) {
