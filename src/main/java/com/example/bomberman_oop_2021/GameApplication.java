@@ -1,6 +1,11 @@
 package com.example.bomberman_oop_2021;
 
+import com.example.bomberman_oop_2021.entities.AbstractEntity;
+import com.example.bomberman_oop_2021.entities.Character.Player;
+import com.example.bomberman_oop_2021.entities.mapEntities.Grass;
+import com.example.bomberman_oop_2021.entities.mapEntities.Wall;
 import com.example.bomberman_oop_2021.graphics.Sprite;
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -18,8 +23,8 @@ public class GameApplication extends Application {
 
     private GraphicsContext gc;
     private Canvas canvas;
-    private List<Entity> entities = new ArrayList<>();
-    private List<Entity> aliveObjects = new ArrayList<>();
+    private List<Player> entities = new ArrayList<Player>();
+    private List<AbstractEntity> aliveObjects = new ArrayList<AbstractEntity>();
 
     public GameApplication() {
     }
@@ -40,8 +45,48 @@ public class GameApplication extends Application {
         // Tao scene
         Scene scene = new Scene(root);
 
-        // Them scene vao stage
+        // Thêm scene vao stage
         primaryStage.setScene(scene);
         primaryStage.show();
+
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long l) {
+                render();
+                update();
+            }
+        };
+        timer.start();
+
+        createMap();
+
+        Player bomberman = new Player(1, 1, Sprite.playerRight.getFxImage());
+        entities.add(bomberman);
+    }
+
+    public void createMap() {
+        for (int i = 0; i < WIDTH; i++) {
+            for (int j = 0; j < HEIGHT; j++) {
+                AbstractEntity object;
+                if (j == 0 || j == HEIGHT - 1 || i == 0 || i == WIDTH - 1) {
+                    object = new Wall(i, j, Sprite.wall.getFxImage());
+                }
+                else {
+                    object = new Grass(i, j, Sprite.grass.getFxImage());
+                }
+
+                aliveObjects.add(object);
+            }
+        }
+    }
+
+    public void update() {
+        entities.forEach(AbstractEntity::update);
+    }
+
+    public void render() {
+        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        aliveObjects.forEach(g -> g.render(gc));
+        entities.forEach(g -> g.render(gc));
     }
 }

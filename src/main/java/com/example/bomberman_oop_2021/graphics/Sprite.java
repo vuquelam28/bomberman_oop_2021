@@ -1,6 +1,11 @@
 package com.example.bomberman_oop_2021.graphics;
 
+import javafx.scene.image.*;
+
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
+
+import static java.lang.Long.SIZE;
 
 /**
  * Lưu thông tin của một sprite lấy ra từ sprite sheet
@@ -16,7 +21,7 @@ public class Sprite {
     protected int actualWidth;
     protected int actualHeight;
     private SpriteSheet spriteSheet;
-    public static SpriteSheet original = new SpriteSheet("/textures/classic.png", 256);
+    public static SpriteSheet original = new SpriteSheet("./textures/classic.png", 256);
     
     /*
         Phần này dùng để khởi tạo thông tin của các sprites trong game.
@@ -179,14 +184,20 @@ public class Sprite {
         // loadSprite();
     }
 
+    public int getSpriteSize() {
+        return spriteSize;
+    }
+
+    public int[] getPixels() {
+        return pixels;
+    }
+
     /**
      * Tạo màu cho hình ảnh. Gán mọi pixel của ảnh bằng màu color.
      * @param color màu muốn tô.
      */
     private void setColor(int color) {
-        for (int i = 0; i < pixels.length; ++i) {
-            pixels[i] = color;
-        }
+        Arrays.fill(pixels, color);
     }
 
     /**
@@ -195,5 +206,79 @@ public class Sprite {
     private void loadSpriteFromSheet() {
         BufferedImage sprite = original.image.getSubimage(x, y, spriteSize, spriteSize);
         sprite.getRGB(0, 0, spriteSize, spriteSize, pixels, 0, spriteSize);
+    }
+
+    /**
+     * Di chuyển các sprite gồm có 3 ảnh.
+     * @param normal trạng thái bình thường.
+     * @param x1 trạng thái 1.
+     * @param x2 trạng thái 2.
+     * @param animate hiệu ứng.
+     * @param time thời gian di chuyển.
+     * @return trạng thái sprite.
+     */
+    public static Sprite movingSprite(Sprite normal, Sprite x1, Sprite x2, int animate, int time) {
+        int calc = animate % time;
+        int diff = time / 3;
+
+        if (calc < diff) {
+            return normal;
+        }
+
+        if (calc < diff * 2) {
+            return x1;
+        }
+
+        return x2;
+    }
+
+    public static Sprite movingSprite(Sprite x1, Sprite x2, int animate, int time) {
+        int diff = time / 2;
+        return (animate % time > diff) ? x1 : x2;
+    }
+
+    public Image getFxImage() {
+        WritableImage wr = new WritableImage(spriteSize, spriteSize);
+        PixelWriter pw = wr.getPixelWriter();
+        for (int x = 0; x < spriteSize; x++) {
+            for (int y = 0; y < spriteSize; y++) {
+                if (pixels[x + y * spriteSize] == TRANSPARENT_COLOR) {
+                    pw.setArgb(x, y, 0);
+                }
+                else {
+                    pw.setArgb(x, y, pixels[x + y * spriteSize]);
+                }
+            }
+        }
+
+        Image input = new ImageView(wr).getImage();
+        return resample(input, SCALED_SIZE / DEFAULT_SIZE);
+    }
+
+    private Image resample(Image input, int scaleFactor) {
+        final int W = (int) input.getWidth();
+        final int H = (int) input.getHeight();
+        final int S = scaleFactor;
+
+        WritableImage output = new WritableImage(
+                W * S,
+                H * S
+        );
+
+        PixelReader reader = input.getPixelReader();
+        PixelWriter writer = output.getPixelWriter();
+
+        for (int y = 0; y < H; y++) {
+            for (int x = 0; x < W; x++) {
+                final int argb = reader.getArgb(x, y);
+                for (int dy = 0; dy < S; dy++) {
+                    for (int dx = 0; dx < S; dx++) {
+                        writer.setArgb(x * S + dx, y * S + dy, argb);
+                    }
+                }
+            }
+        }
+
+        return output;
     }
 }
