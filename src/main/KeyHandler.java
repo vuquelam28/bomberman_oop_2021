@@ -5,54 +5,30 @@ import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener {
 
-    public boolean upPressed, downPressed, leftPressed, rightPressed;
+    private boolean[] keys = new boolean[1000]; // Mảng lưu trạng thái bấm - nhả của các phím.
+    public boolean upPressed, downPressed, leftPressed, rightPressed, spacePressed;
+
+    public void update() {
+
+        upPressed = keys[KeyEvent.VK_UP] || keys[KeyEvent.VK_W];
+        downPressed = keys[KeyEvent.VK_DOWN] || keys[KeyEvent.VK_S];
+        leftPressed = keys[KeyEvent.VK_LEFT] || keys[KeyEvent.VK_A];
+        rightPressed = keys[KeyEvent.VK_RIGHT] || keys[KeyEvent.VK_D];
+        spacePressed = keys[KeyEvent.VK_SPACE] || keys[KeyEvent.VK_X];
+    }
 
     @Override
-    public void keyTyped(KeyEvent e) {
-
-    }
+    public void keyTyped(KeyEvent e) {}
 
     @Override
     public void keyPressed(KeyEvent e) {
 
-        int code = e.getKeyCode();
-
-        if (code == KeyEvent.VK_UP) {
-            upPressed = true;
-        }
-
-        if (code == KeyEvent.VK_DOWN) {
-            downPressed = true;
-        }
-
-        if (code == KeyEvent.VK_LEFT) {
-            leftPressed = true;
-        }
-
-        if (code == KeyEvent.VK_RIGHT) {
-            rightPressed = true;
-        }
+        keys[e.getKeyCode()] = true;
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
 
-        int code = e.getKeyCode();
-
-        if (code == KeyEvent.VK_UP) {
-            upPressed = false;
-        }
-
-        if (code == KeyEvent.VK_DOWN) {
-            downPressed = false;
-        }
-
-        if (code == KeyEvent.VK_LEFT) {
-            leftPressed = false;
-        }
-
-        if (code == KeyEvent.VK_RIGHT) {
-            rightPressed = false;
-        }
+        keys[e.getKeyCode()] = false;
     }
 }

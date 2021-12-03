@@ -1,23 +1,14 @@
 package Main;
 
+import Exceptions.BombermanException;
+import GUI.Frame;
+
 import javax.swing.*;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws BombermanException {
 
-        JFrame window = new JFrame();
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setResizable(false);
-        window.setTitle("Bomberman Game By Java");
-
-        GamePanel gamePanel = new GamePanel();
-        window.add(gamePanel);
-        window.pack();
-
-        window.setLocationRelativeTo(null);
-        window.setVisible(true);
-
-        gamePanel.startGameThread();
+        Frame window = new Frame();
     }
 }

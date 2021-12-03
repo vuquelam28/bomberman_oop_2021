@@ -1,16 +1,51 @@
 package Entities;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
+import Graphics.*;
+import Level.Coordinates;
 
-public class AbstractEntity {
+public abstract class AbstractEntity implements RenderGraphics {
 
-    public int x, y;
-    public int speed;
+    protected double x, y;
+    protected boolean removed = false;
+    protected Sprite sprite;
 
-    // Lưu các ảnh của sprites.
-    public BufferedImage up1, up2, up3, down1, down2, down3;
-    public BufferedImage left1, left2, left3, right1, right2, right3;
+    @Override
+    public abstract void update();
 
-    public int spriteCounter = 0;
-    public int spriteNumber = 1;
+    @Override
+    public abstract void render(Screen screen);
+
+    public void remove() {
+        removed = true;
+    }
+
+    public boolean isRemoved() {
+        return removed;
+    }
+
+    public Sprite getSprite() {
+        return sprite;
+    }
+
+    public abstract boolean collide(AbstractEntity e);
+
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    // Lấy tọa độ x của Tile để xét va chạm nhưng trừ đi nửa block để cho chính xác.
+    public int getXTile() {
+        return Coordinates.pixelToTile(x + sprite.SIZE / 2);
+    }
+
+    // Lấy tọa độ y của Tile để xét va chạm nhưng trừ đi nửa block để cho chính xác.
+    public int getYTile() {
+        return Coordinates.pixelToTile(y - sprite.SIZE / 2); //plus half block
+    }
 }
