@@ -77,6 +77,7 @@ public class Bomb extends AnimatedEntity {
     }
 
     public void updateExplosions() {
+        Game.playSE(2);
 
         for (int i = 0; i < explosions.length; ++i) {
             explosions[i].update();

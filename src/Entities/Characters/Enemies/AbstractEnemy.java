@@ -174,6 +174,7 @@ public abstract class AbstractEnemy extends Mob {
 
     @Override
     public void kill() {
+        Game.playSE(6);
 
         if (!alive) {
             return;

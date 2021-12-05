@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+
+import Audio.Sound;
 import GUI.Frame;
 import Exceptions.BombermanException;
 import Graphics.*;
@@ -37,6 +39,9 @@ public class Game extends Canvas {
 
     // Biến bắt sự kiện bàn phím.
     private KeyHandler keyHandler;
+
+    // Biến âm thanh.
+    static Sound sound = new Sound();
 
     // Trạng thái game đang dừng hay đang diễn ra.
     private boolean running = false;
@@ -113,6 +118,8 @@ public class Game extends Canvas {
 
     // Start game.
     public void start() {
+
+        playMusic(0);
 
         running = true;
 
@@ -250,5 +257,20 @@ public class Game extends Canvas {
     public void pause() {
         
         paused = true;
+    }
+
+    public void playMusic(int i) {
+        sound.setFile(i);
+        sound.play();
+        sound.loop();
+    }
+
+    public static void stopMusic(int i) {
+        sound.stop();
+    }
+
+    public static void playSE(int i) {
+        sound.setFile(i);
+        sound.play();
     }
 }

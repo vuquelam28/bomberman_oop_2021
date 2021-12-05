@@ -90,6 +90,7 @@ public class Bomber extends Mob {
     private void detectPlaceBomb() {
 
         if (keyHandler.spacePressed && Game.getBombRate() > 0 && timeBetweenPutBombs < 0) {
+            Game.playSE(2);
 
             int xt = Coordinates.pixelToTile(x + sprite.getSize() / 2);
             //subtract half player height and minus 1 y position.
@@ -125,6 +126,7 @@ public class Bomber extends Mob {
     // Xử lý va chạm với mobs và ăn kill.
     @Override
     public void kill() {
+        Game.playSE(4);
 
         if(!alive) {
             return;
@@ -259,6 +261,7 @@ public class Bomber extends Mob {
     public void addPowerup(Powerup p) {
 
         if(p.isRemoved()) {
+            Game.playSE(5);
             return;
         }
 

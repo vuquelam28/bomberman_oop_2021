@@ -17,6 +17,7 @@ public class PortalTile extends AbstractTile {
 
     @Override
     public boolean collide(AbstractEntity e) {
+        Main.Game.playSE(7);
 
         if(e instanceof Bomber) {
 
