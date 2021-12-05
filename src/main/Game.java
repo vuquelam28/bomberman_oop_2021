@@ -242,8 +242,7 @@ public class Game extends Canvas {
     }
 
     public boolean isPaused() {
-        
-        
+
         return paused;
     }
 
