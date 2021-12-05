@@ -34,6 +34,7 @@ public class DestroyableTile extends AbstractTile {
 	
 	public void destroy() {
 		_destroyed = true;
+		Main.Game.playSE(3);
 	}
 	
 	@Override
